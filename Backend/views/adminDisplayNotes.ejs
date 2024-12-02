@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Displaying All Notes</h1>
+
+    <div class="">
+        <% notes.forEach((note) => { %>
+
+            <span>NotesId : <%= note.id%></span> <br>
+            <span>Title : <%= note.title%></span> <br>
+            <span>Content : <%= note.content%></span>
+
+            <br>
+            <br>
+            <br>
+        <% }) %>
+    </div>
+
+
+</body>
+</html>

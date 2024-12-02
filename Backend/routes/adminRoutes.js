@@ -19,7 +19,7 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
     const { adminUsername, adminPassword } = req.body;
 
-    if (adminUsername == 'admin' && adminPassword == 'admin') {
+    if (adminUsername == 'admin' && adminPassword == 'a') {
         req.session.adminUser = adminUsername;
         res.redirect('home');
     }
@@ -36,7 +36,17 @@ router.get('/home', authenticateAdmin, (req, res) => {
 router.get('/addNotes', authenticateAdmin, (req, res) => {
     res.render('adminAddNotes');
 })
+let notes = [];
 
+router.post('/addNotes', authenticateAdmin, (req, res) => {
+    const data = req.body;
+    notes = data['notes'];
+    res.redirect('/admin/home');
+});
+
+router.get('/displayNotes', authenticateAdmin, (req, res) => {
+    res.render('adminDisplayNotes', {notes});
+})
 
 
 // Route to handle admin logout
