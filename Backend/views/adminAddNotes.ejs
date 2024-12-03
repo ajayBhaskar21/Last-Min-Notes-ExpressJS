@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('header.ejs')%>
+    <h1>Add Notes</h1>
+    <button onclick="addNewNotes()">Add new Notes</button>
+    <form action="/admin/addNotes" method="post">
+        <div class="allNotes">
+        </div>
+        <br>
+        <input type="submit">
+    </form>
+    <script>
+        let id = 0;
+        function addNewNotes() {
+            ++id;
+            let allNotes = document.querySelector('.allNotes');
+
+            // Create title input
+            let inpTitle = document.createElement('input');
+            inpTitle.name = `notes[${id}][title]`; // Use structured data names
+            inpTitle.placeholder = `Note Title ${id}`;
+            inpTitle.type = "text";
+
+            // Create content textarea
+            let inpContent = document.createElement('textarea');
+            inpContent.name = `notes[${id}][content]`; // Use structured data names
+            inpContent.placeholder = `Note Content ${id}`;
+
+            inpContent.style.width = '200px'; // Adjusted width
+            inpContent.style.height = '30px'; // Adjusted height
+
+            
+            // Append the new inputs
+            allNotes.append(inpTitle);
+            allNotes.append(inpContent);
+
+            // Add spacing for better visibility
+            allNotes.append(document.createElement('br'));
+            allNotes.append(document.createElement('br'));
+        }
+    </script>
+</body>
+</html>
