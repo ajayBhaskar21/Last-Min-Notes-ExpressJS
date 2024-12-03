@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    <%- include('header.ejs')%>
     <h1>Add Notes</h1>
     <button onclick="addNewNotes()">Add new Notes</button>
     <form action="/admin/addNotes" method="post">
@@ -34,13 +35,8 @@
             inpContent.style.width = '200px'; // Adjusted width
             inpContent.style.height = '30px'; // Adjusted height
 
-            let inpId = document.createElement('input');
-            inpId.name = `notes[${id}][id]`;
-            //inpId.style.type = 'hidden';
-            inpId.value = id;
-
+            
             // Append the new inputs
-            allNotes.append(inpId);
             allNotes.append(inpTitle);
             allNotes.append(inpContent);
 

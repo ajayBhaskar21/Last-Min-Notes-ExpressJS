@@ -40,13 +40,36 @@ let notes = [];
 
 router.post('/addNotes', authenticateAdmin, (req, res) => {
     const data = req.body;
-    notes = data['notes'];
+    const listOfNotes = data['notes'];
+    let id = notes.length + 1;  // id is given based on length of notes (but will not work when deletion performed and then adding the notes)
+    notes = notes.concat(listOfNotes); // appending notes list from the frontend with the notes list
+    for (let i = id - 1; i < notes.length; i++) {
+        notes[i]['id'] = id++;
+    }
+    console.log(data);
+    console.log(notes);
     res.redirect('/admin/home');
 });
 
 router.get('/displayNotes', authenticateAdmin, (req, res) => {
     res.render('adminDisplayNotes', {notes});
 })
+
+
+router.get('/deleteNote/:id', authenticateAdmin, (req, res) => {
+    const { id } = req.params;
+
+    // Find the note index
+    const noteIndex = notes.findIndex(note => note.id === id);
+
+    // If the note is found, remove it
+    if (noteIndex !== -1) {
+        notes.splice(noteIndex, 1);
+        res.redirect('/admin/displayNotes');
+    } else {
+        res.status(404).send('Note not found');
+    }
+});
 
 
 // Route to handle admin logout
