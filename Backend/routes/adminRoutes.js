@@ -37,17 +37,15 @@ router.get('/addNotes', authenticateAdmin, (req, res) => {
     res.render('adminAddNotes');
 })
 let notes = [];
-
+let id = 1;
 router.post('/addNotes', authenticateAdmin, (req, res) => {
     const data = req.body;
     const listOfNotes = data['notes'];
-    let id = notes.length + 1;  // id is given based on length of notes (but will not work when deletion performed and then adding the notes)
+    let end = notes.length;  
     notes = notes.concat(listOfNotes); // appending notes list from the frontend with the notes list
-    for (let i = id - 1; i < notes.length; i++) {
+    for (let i = end; i < notes.length; i++) {
         notes[i]['id'] = id++;
     }
-    console.log(data);
-    console.log(notes);
     res.redirect('/admin/home');
 });
 
@@ -55,12 +53,37 @@ router.get('/displayNotes', authenticateAdmin, (req, res) => {
     res.render('adminDisplayNotes', {notes});
 })
 
+router.get('/editNote/:id', authenticateAdmin, (req, res) => {
+    const { id } = req.params;
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i]['id'] === Number(id)) {
+            return res.render('adminEditNote', { note: notes[i] });
+        }
+    }
+    res.send('notes id not found');
+});
+
+router.post('/editNote/:id', authenticateAdmin, (req, res) => {
+    const { title, content } = req.body;
+    const { id } = req.params;
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i]['id'] === Number(id)) {
+            notes[i]['title'] = title;
+            notes[i]['content'] = content;
+
+            return res.redirect('/admin/displayNotes');
+        }
+    }
+    res.send('note id not found');
+});
+
+
+
 
 router.get('/deleteNote/:id', authenticateAdmin, (req, res) => {
     const { id } = req.params;
-
     // Find the note index
-    const noteIndex = notes.findIndex(note => note.id === id);
+    const noteIndex = notes.findIndex(note => note.id === Number(id));
 
     // If the note is found, remove it
     if (noteIndex !== -1) {
