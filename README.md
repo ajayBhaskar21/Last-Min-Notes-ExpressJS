@@ -1,6 +1,6 @@
 # Project Name
 
-A brief description of your project. *(Replace this line with your project details.)*
+A last min notes application for btech students. This application consists of main points for various subjects.
 
 ## Getting Started
 
