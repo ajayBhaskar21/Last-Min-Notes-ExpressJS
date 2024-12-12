@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const Student = require('../models/Student');
+const Note = require('../models/Note');
+
 
 const authenticateStudent = (req, res, next) => {
     if (req.session && req.session.studentEmail) {
@@ -14,8 +16,6 @@ const authenticateStudent = (req, res, next) => {
 router.get('/signup', (req, res) => {
     res.render('studentSignUp');
 })
-
-const students = [];
 
 router.post('/signup', async (req, res) => {
     const { studentEmail, studentPassword } = req.body;
@@ -57,15 +57,54 @@ router.get('/home', authenticateStudent, (req, res) => {
     res.render('studentHome');
 })
 
+router.get('/displayNotes', authenticateStudent, async (req, res) => {
+    try {
+        const allNotes = await Note.find();
+        res.render('studentDisplayNotes', { notes: allNotes});
+    } catch (err) {
+        console.error('Error fetching notes:', err);
+        res.status(500).send('Failed to fetch notes');
+    }
+})
+
+router.get('/searchNotes', authenticateStudent, async (req, res) => {
+    res.render('studentSearchNotes', { notes : []});
+});
+
+router.post('/searchNotes', authenticateStudent, async (req, res) => {
+    const { title } = req.body;
+    
+    try {
+        const allNotes = await Note.find();
+        let notes = [];
+        
+        // Flatten all notes into a single array
+        allNotes.forEach((obj) => {
+            obj.notes.forEach((note) => {
+                notes.push({
+                    title: note.title,
+                    content: note.content
+                });
+            });
+        });
+        
+        // Filter notes that include the search term in their title
+        notes = notes.filter(note => note.title.toLowerCase().includes(title.toLowerCase()));
+        
+        console.log('Filtered notes:', notes);
+        res.render('studentSearchNotes', { notes: notes });
+    } catch (err) {
+        console.error('Error while searching notes:', err);
+        res.status(500).send('Error occurred while searching notes');
+    }
+});
+
+
 
 router.get('/logout', authenticateStudent, (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Failed to destroy session:', err);
-            return res.status(500).send('Something went wrong while logging out.');
-        }
-        res.redirect('login');
-    })
+    // remove the session variable from the session obj
+    delete req.session.studentEmail;
+    res.redirect('login');
 })
 
 

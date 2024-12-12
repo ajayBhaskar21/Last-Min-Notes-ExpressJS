@@ -4,6 +4,8 @@ const session = require('express-session');
 const adminRoutes = require('./routes/adminRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const mongoose = require('mongoose');
+require('dotenv').config();
+
 
 
 const app = express()
@@ -15,7 +17,7 @@ app.use(bodyParser.json());
 
 app.use(
     session({
-        secret: 'hfdjsujdlkak',
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
         cookie: {secure : false} // Set secure: true if using HTTPS
@@ -27,7 +29,8 @@ app.use('/admin', adminRoutes);
 app.use('/student', studentRoutes);
 
 // db connection
-mongoose.connect('mongodb://localhost:27017/LastMinNotes')
+const connectionUrl = process.env.CONN_URL;
+mongoose.connect(connectionUrl)
     .then(() => console.log('mongodb connected'))
     .catch((e) => console.log(e));
 

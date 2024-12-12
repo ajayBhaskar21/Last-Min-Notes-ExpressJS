@@ -133,16 +133,20 @@ router.get('/deleteNote/:id', authenticateAdmin, async (req, res) => {
 
         // Find the document containing the specific note by its ID
         const noteDoc = await Note.findOne({ 'notes._id': id });
-
+        // store the parent id
+        const parentId = noteDoc._id;
         if (!noteDoc) {
             return res.status(404).send('Note not found');
         }
 
         // Remove the specific note from the `notes` array
         noteDoc.notes = noteDoc.notes.filter(note => note._id.toString() !== id);
-
+        // remove the parent object if there are no notes in that object
+        if (noteDoc.notes.length == 0)
+            await noteDoc.deleteOne({ _id: parentId });
         // Save the updated document
-        await noteDoc.save();
+        else
+            await noteDoc.save();
         res.redirect('/admin/displayNotes');
     } catch (err) {
         console.error('Error deleting note:', err);
@@ -153,13 +157,9 @@ router.get('/deleteNote/:id', authenticateAdmin, async (req, res) => {
 
 // Admin logout route
 router.get('/logout', authenticateAdmin, (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Failed to destroy session:', err);
-            return res.status(500).send('Something went wrong while logging out.');
-        }
-        res.redirect('/admin/login');
-    });
+    // remove the session variable from the session obj    
+    delete req.session.adminUser;
+    res.redirect('login');
 });
 
 module.exports = router;
