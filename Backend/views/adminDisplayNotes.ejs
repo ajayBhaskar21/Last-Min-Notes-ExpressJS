@@ -11,15 +11,16 @@
     <h1>Displaying All Notes</h1>
 
     <div class="">
-        <% notes.forEach((note) => { %>
-
-            <span>NotesId : <%= note.id%></span> <br>
-            <span>Title : <%= note.title%></span> <br>
-            <span>Content : <%= note.content%></span> <br>
-            <span>Edit Notes : <a href="/admin/editNote/<%= note.id%>">edit</a> </span> <br>
-            <span>Delete Notes : <a href="/admin/deleteNote/<%= note.id%>">delete</a> </span> <br>
-            <br>
-            <br>
+        <% notes.forEach((obj) => { %>
+            <% obj.notes.forEach((note) => { %>
+                <span>NotesId : <%= note._id%></span> <br>
+                <span>Title : <%= note.title%></span> <br>
+                <span>Content : <%= note.content%></span> <br>
+                <span>Edit Notes : <a href="/admin/editNote/<%= note._id%>">edit</a> </span> <br>
+                <span>Delete Notes : <a href="/admin/deleteNote/<%= note._id%>">delete</a> </span> 
+                <br>
+                <br>
+            <% }) %>
             <br>
         <% }) %>
     </div>
