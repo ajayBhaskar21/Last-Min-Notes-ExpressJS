@@ -14,6 +14,9 @@ const authenticateStudent = (req, res, next) => {
 } 
 
 router.get('/signup', (req, res) => {
+    if (req.session && req.session.studentEmail) {
+        return res.redirect('/student/home');
+    }
     res.render('studentSignUp');
 })
 

@@ -30,11 +30,11 @@
          
     </style>
 </head>
-<body class="p-3">
+<body>
+    <%- include('studentHeader')%>
+    <h1 class="display-4 p-3">Displaying All Notes</h1>
 
-    <h1 class="display-4">Displaying All Notes</h1>
-
-    <div class="container">
+    <div class="container p-3">
         <div class="row">
 
             <% notes.forEach((obj) => { %>

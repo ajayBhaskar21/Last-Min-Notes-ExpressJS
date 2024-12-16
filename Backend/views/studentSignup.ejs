@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
-<body>
-    
-    <h1>Student Registration Form</h1>
-    <form action="/student/signup" method="post">
+<body >
+    <%- include('studentHeader')%>
+    <div class="d-flex justify-content-center align-items-center vh-100">
 
-        <label for="">Email</label> 
-        <input type="email" name="studentEmail" id="" required><br>
-        <label for="">Password</label>
-        <input type="password" name="studentPassword" id="" required> <br>
-
-        Already have an account? <a href="login">login</a> <br> <br>
-
-        <input type="submit" id="">
-
-    </form>
-
+        <div class="container text-center">
+            <h1 class="mb-4">Student Registration Form</h1>
+            <form action="/student/signup" method="post" class="mx-auto text-start" style="max-width: 300px;">
+                <div class="mb-3">
+                    <label class="form-label" for="studentEmail">Email</label>
+                    <input class="form-control" type="email" name="studentEmail" id="studentEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="studentPassword">Password</label>
+                    <input class="form-control" type="password" name="studentPassword" id="studentPassword" required>
+                </div>
+                <div class="mb-3 text-center">
+                    <pre>Already have an account? <a href="login" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">login</a></pre>
+                </div>
+                <div class="text-center">
+                    <input class="btn btn-primary w-50" type="submit" value="Sign Up">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
